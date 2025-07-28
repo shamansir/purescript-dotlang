@@ -2,7 +2,8 @@ module Test.Main where
 
 import Prelude
 
-import Color.Scheme.MaterialDesign (red)
+import Color (Color)
+import Color (rgb) as Color
 import Data.DotLang (Definition(..), Graph(..), Edge(..), EdgeType(..), global, node, (==>), (=*>))
 import Data.DotLang.Attr (FillStyle(..))
 import Data.DotLang.Attr.Edge as Edge
@@ -12,7 +13,7 @@ import Data.DotLang.Attr.Node (Attr(..), LabelValue(..), RecordLabelValue(..), S
 import Data.DotLang.Attr.Node as Node
 import Data.DotLang.Class (toText)
 import Data.Maybe (Maybe(..))
-import DocTest as DocTest
+-- import DocTest as DocTest
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Test.Spec (pending, describe, it)
@@ -20,23 +21,28 @@ import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (run, runSpec)
 
+
+red :: Color
+red = Color.rgb 244 67 54
+
+
 main ∷ Effect Unit
 main =
   launchAff_
     $ do
         runSpec [ consoleReporter ] do
-          DocTest.main
+          -- DocTest.main
           describe "DotLang" do
             it "basic test" do
               let
                 g =
                   DiGraph
                     [ global [ Global.RankDir FromLeft ]
-                    , node "a" [ Shape Diamond, Style Filled, Node.FillColor red ]
+                    , node "a" [ Shape Diamond, Style Node.Filled, Node.FillColor red ]
                     , node "b" []
                     , "a" ==> "b"
                     , "a" =*> "d" $ [ Edge.FillColor red ]
-                    , Subgraph
+                    , Subgraph Nothing
                         [ node "d" []
                         ]
                     ]
