@@ -12,8 +12,53 @@
             "maybe",
             "prelude",
             "psci-support",
-            "spec",
             "strings"
+          ],
+          "build_plan": [
+            "arrays",
+            "bifunctors",
+            "colors",
+            "console",
+            "const",
+            "contravariant",
+            "control",
+            "distributive",
+            "effect",
+            "either",
+            "enums",
+            "exists",
+            "foldable-traversable",
+            "functions",
+            "functors",
+            "gen",
+            "identity",
+            "integers",
+            "invariant",
+            "lazy",
+            "lists",
+            "maybe",
+            "newtype",
+            "nonempty",
+            "numbers",
+            "orders",
+            "partial",
+            "prelude",
+            "profunctor",
+            "psci-support",
+            "refs",
+            "safe-coerce",
+            "st",
+            "strings",
+            "tailrec",
+            "tuples",
+            "type-equality",
+            "unfoldable",
+            "unsafe-coerce"
+          ]
+        },
+        "test": {
+          "dependencies": [
+            "spec"
           ],
           "build_plan": [
             "aff",
@@ -22,8 +67,6 @@
             "avar",
             "bifunctors",
             "catenable-lists",
-            "colors",
-            "console",
             "const",
             "contravariant",
             "control",
@@ -58,7 +101,6 @@
             "pipes",
             "prelude",
             "profunctor",
-            "psci-support",
             "refs",
             "safe-coerce",
             "spec",
@@ -71,10 +113,6 @@
             "unfoldable",
             "unsafe-coerce"
           ]
-        },
-        "test": {
-          "dependencies": [],
-          "build_plan": []
         }
       }
     },
