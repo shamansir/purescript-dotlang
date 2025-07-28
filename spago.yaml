@@ -1,0 +1,19 @@
+package:
+  name: dotlang
+  dependencies:
+  - arrays
+  - colors
+  - console
+  - effect
+  - maybe
+  - prelude
+  - psci-support
+  - strings
+  test:
+    main: Test.Main
+    dependencies:
+      - spec
+workspace:
+  extraPackages: {}
+  packageSet:
+    url: https://raw.githubusercontent.com/purescript/package-sets/psc-0.15.4-20221127/packages.json
