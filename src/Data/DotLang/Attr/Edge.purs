@@ -4,17 +4,10 @@ import Prelude
 import Color (Color, toHexString)
 import Data.DotLang.Attr (FillStyle)
 import Data.DotLang.Class (class DotLang, toText)
-import Data.Generic.Rep (class Generic)
-import Data.Show.Generic (genericShow)
 
 data LabelValue
   = TextLabel String
   | HtmlLabel String
-
-derive instance genericLabel :: Generic LabelValue _
-
-instance showLabel :: Show LabelValue where
-  show = genericShow
 
 data ArrowHeadStyle
   = Normal
@@ -36,11 +29,6 @@ data ArrowHeadStyle
   | Open
   | HalfOpen
   | Vee
-
-derive instance genericArrowHeadStyle :: Generic ArrowHeadStyle _
-
-instance showArrowHeadStyle :: Show ArrowHeadStyle where
-  show = genericShow
 
 instance arrowHeadStyle :: DotLang ArrowHeadStyle where
   toText Normal = "normal"
@@ -73,11 +61,6 @@ data Attr
   | PenWidth Number
   | ArrowHead ArrowHeadStyle
 
-derive instance genericAttr :: Generic Attr _
-
-instance showAttr :: Show Attr where
-  show = genericShow
-
 instance attrDotLang :: DotLang Attr where
   toText (Color s) = "color=\"" <> toHexString s <> "\""
   toText (FontColor s) = "fontcolor=\"" <> toHexString s <> "\""
@@ -92,7 +75,7 @@ instance attrDotLang :: DotLang Attr where
 -- |
 --| ```purescript run
 --| > import Data.DotLang.Attr.Edge
---| > :t htmlLabel "<table><tr><td>Label</td></tr></table>" 
+--| > :t htmlLabel "<table><tr><td>Label</td></tr></table>"
 --| Attr
 --| ```
 -- | htmlLabel as a part of an attribute of an edge.
@@ -101,7 +84,7 @@ htmlLabel = HtmlLabel >>> Label
 
 -- |
 --| ```purescript run
---| > :t label "..." 
+--| > :t label "..."
 --| Attr
 --| ```
 -- | label as a part of an attribute of an edge.

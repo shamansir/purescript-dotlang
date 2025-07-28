@@ -5,9 +5,7 @@ import Data.DotLang.Attr.Edge as Edge
 import Data.DotLang.Attr.Global as Global
 import Data.DotLang.Attr.Node as Node
 import Data.DotLang.Class (class DotLang, toText)
-import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
-import Data.Show.Generic (genericShow)
 import Data.String (joinWith)
 import Prelude (class Show, ($), (<$>), (<>))
 
@@ -42,11 +40,6 @@ nodeId (Node id _) = id
 changeNodeId :: (Id -> Id) -> Node -> Node
 changeNodeId f (Node id attr) = Node (f id) $ attr <> [ Node.label id ]
 
-derive instance genericNode :: Generic Node _
-
-instance showNode :: Show Node where
-  show = genericShow
-
 instance nodeDotLang :: DotLang Node where
   toText (Node id attrs) = id <> " [" <> joinWith ", " (toText <$> attrs) <> "]"
 
@@ -54,11 +47,6 @@ data EdgeType
   = Forward
   | Backward
   | NoDir
-
-derive instance genericEdgeType :: Generic EdgeType _
-
-instance showEdgeType :: Show EdgeType where
-  show = genericShow
 
 instance dotLangEdgeType :: DotLang EdgeType where
   toText Forward = "->"
@@ -73,11 +61,6 @@ instance dotLangEdgeType :: DotLang EdgeType where
 -- | EdgeType determines the direction of the arrow
 data Edge
   = Edge EdgeType Id Id (Array Edge.Attr)
-
-derive instance genericEdge :: Generic Edge _
-
-instance showEdge :: Show Edge where
-  show = genericShow
 
 instance dotLangEdge :: DotLang Edge where
   toText (Edge e id id2 attrs) = id <> " " <> (toText e) <> " " <> id2 <> attrText
@@ -113,10 +96,10 @@ node id attrs = NodeDef $ Node id attrs
 
 -- |
 --| ```purescript run
---| > :t edge Forward "a" "b" [] 
+--| > :t edge Forward "a" "b" []
 --| Definition
 --| ```
--- | edge as a part of a definition. 
+-- | edge as a part of a definition.
 -- | `==>` and `=*>` can also be used for that purpose:
 -- |
 edge :: EdgeType → Id → Id → Array Edge.Attr → Definition
@@ -142,7 +125,7 @@ normalEdge l r = normalEdgeWithAttrs l r []
 
 -- |
 --| ```purescript run
---| > :t "a" ==> "b" 
+--| > :t "a" ==> "b"
 --| Definition
 --| ```
 -- | Forward edge as as a definition

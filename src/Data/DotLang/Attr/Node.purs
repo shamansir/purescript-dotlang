@@ -4,9 +4,7 @@ import Prelude
 
 import Color (Color, toHexString)
 import Data.DotLang.Class (class DotLang, toText)
-import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..), maybe)
-import Data.Show.Generic (genericShow)
 import Data.String (joinWith)
 
 data Style
@@ -20,11 +18,6 @@ data Style
   | Wedged
   | Diagonals
   | Rounded
-
-derive instance Generic Style _
-
-instance Show Style where
-  show = genericShow
 
 instance DotLang Style where
   toText Dashed = "dashed"
@@ -43,11 +36,6 @@ data LabelValue
   | HtmlLabel String
   | RecordLabel RecordLabelValue
 
-derive instance genericLabel :: Generic LabelValue _
-
-instance showLabel :: Show LabelValue where
-  show l = genericShow l
-
 renderLabel :: LabelValue -> String
 renderLabel = case _ of
   TextLabel t -> show t
@@ -55,19 +43,14 @@ renderLabel = case _ of
   RecordLabel recordValue -> show $ renderRecordLabelValue recordValue
 
 
-data RecordLabelValue 
+data RecordLabelValue
   = SubRecord (Array {fieldId:: Maybe String, value:: RecordLabelValue})
   | Base String
-
-derive instance genericRecordLabelValue :: Generic RecordLabelValue _
-
-instance showRecordLabelValue :: Show RecordLabelValue where
-  show l = genericShow l
 
 renderRecordLabelValue :: RecordLabelValue -> String
 renderRecordLabelValue = case _ of
   SubRecord parts -> joinWith " | " $ map renderPart parts
-    where 
+    where
       renderPart {fieldId, value} = brace "{" "}" $ (maybe "" (brace "<" ">") fieldId) <> renderRecordLabelValue value
       brace left right str =  left <> str <> right
   Base str -> str
@@ -83,11 +66,6 @@ data Attr
   | Style Style
   | FillColor Color
   | PenWidth Number
-
-derive instance genericAttr :: Generic Attr _
-
-instance showAttr :: Show Attr where
-  show = genericShow
 
 instance attrDotLang :: DotLang Attr where
   toText (Margin i) = "margin=" <> show i
@@ -164,11 +142,6 @@ data ShapeType
   | Lpromoter
   | Record
 
-derive instance genericShapeType :: Generic ShapeType _
-
-instance showShapeType :: Show ShapeType where
-  show = genericShow
-
 instance dotLangShape :: DotLang ShapeType where
   toText Box = "box"
   toText Polygon = "polygon"
@@ -244,7 +217,7 @@ htmlLabel = HtmlLabel >>> Label
 -- |
 --| ```purescript run
 --| > import Data.DotLang.Attr.Node
---| > :t label "..." 
+--| > :t label "..."
 --| Attr
 --| ```
 -- | label as a part of an attribute of a node.
@@ -261,11 +234,11 @@ label = TextLabel >>> Label
 recordLabel :: Array {fieldId:: Maybe String, value:: RecordLabelValue} -> Attr
 recordLabel = SubRecord >>> RecordLabel >>> Label
 
-subRecord :: Array {fieldId:: Maybe String, value:: RecordLabelValue} -> {fieldId:: Maybe String, value:: RecordLabelValue} 
+subRecord :: Array {fieldId:: Maybe String, value:: RecordLabelValue} -> {fieldId:: Maybe String, value:: RecordLabelValue}
 subRecord v = {fieldId: Nothing, value: SubRecord v }
 
 subLabel :: String -> {fieldId :: Maybe String, value :: RecordLabelValue}
 subLabel value = {fieldId : Nothing, value: Base value }
 
-subId :: String -> {fieldId :: Maybe String, value :: RecordLabelValue} ->{fieldId :: Maybe String, value :: RecordLabelValue} 
+subId :: String -> {fieldId :: Maybe String, value :: RecordLabelValue} ->{fieldId :: Maybe String, value :: RecordLabelValue}
 subId str {value} = {fieldId: Just str, value: value}
